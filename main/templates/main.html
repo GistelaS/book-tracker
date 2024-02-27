@@ -21,6 +21,19 @@
     <td>{{book.page}}</td>
     <td>{{book.description}}</td>
     <td>{{book.date_added}}</td>
+
+    <td>
+      <a href="{% url 'main:edit_book' book.pk %}">
+          <button>
+              Edit
+          </button>
+      </a>
+      <a href="{% url 'main:delete_book' book.pk %}">
+            <button>
+                Delete
+            </button>
+        </a>
+    </td>
   </tr>
   {% endfor %}
 </table>
@@ -33,6 +46,7 @@
 <a href="{% url 'main:logout' %}">
   <button>Logout</button>
 </a>
+
 <h5>Sesi terakhir login: {{ last_login }}</h5>
 {% endblock content %}
 
