@@ -13,7 +13,10 @@ from django.shortcuts import render, redirect   # Tambahkan import redirect di b
 from main.forms import BookForm
 from main.models import Book
 from django.views.decorators.csrf import csrf_exempt
+import json
+from django.http import JsonResponse
 # Create your views here.
+
 @login_required(login_url='/login')
 def show_main(request):
     books = Book.objects.filter(user=request.user)
@@ -115,3 +118,21 @@ def add_book_ajax(request):
 
     return HttpResponseNotFound()
 
+@csrf_exempt
+def create_book_flutter(request):
+    if request.method == 'POST':
+
+        data = json.loads(request.body)
+
+        new_book = Book.objects.create(
+            user = request.user,
+            name = data["name"],
+            page = int(data["page"]),
+            description = data["description"]
+        )
+
+        new_book.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
